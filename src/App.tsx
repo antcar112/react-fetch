@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import './App.css'
+import { useFetch } from './useFetch'
 
 interface Post {
   title: string
@@ -8,21 +9,7 @@ interface Post {
 }
 
 function App() {
-  const [posts, setPosts] = useState<Post[] | undefined>()
-  const [loading, setLoading] = useState(false)
-
-  useEffect(() => {
-    const fetchPosts = async () => {
-      setLoading(true)
-      const res = await fetch('https://jsonplaceholder.typicode.com/posts')
-      const data = await res.json()
-      // Error handling... handle error
-      setPosts(data)
-      setLoading(false)
-    }
-
-    fetchPosts()
-  }, [])
+  const { data: posts, loading } = useFetch<Post>('https://jsonplaceholder.typicode.com/posts')
 
   if (loading || !posts) {
     return <h3>Loading...⏰</h3>
